@@ -370,6 +370,7 @@ public class FragmentUpload extends Fragment {
             coverBitmap = BitmapFactory.decodeFile(takeImagePath, options);
             cover.setImageBitmap(coverBitmap);
             saveImageToGallery(getActivity());
+            fromVideo = false;
 
         }
         else if((requestCode == GET_VIDEO_BY_CAMERA) && (resultCode == RESULT_OK)){
