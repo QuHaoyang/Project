@@ -20,11 +20,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.project.MyVideo;
 import com.example.project.R;
 import com.example.project.SurfaceActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -106,6 +108,68 @@ public class FragmentMine extends Fragment {
         TextView username_change = view.findViewById(R.id.username_change);
         user_name = view.findViewById(R.id.username);
         readFromFile();
+
+
+
+        btn1.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View view){
+
+                Intent intent = new Intent( getActivity(),MyVideo.class);
+                startActivity( intent);
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View view){
+
+                Toast.makeText(getActivity(),"该功能全速开发中，敬请期待！",Toast.LENGTH_SHORT).show();
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View view){
+
+                Toast.makeText(getActivity(),"该功能全速开发中，敬请期待！",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btn4.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View view){
+
+                Toast.makeText(getActivity(),"该功能全速开发中，敬请期待！",Toast.LENGTH_SHORT).show();
+            }
+        });
+        btn5.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View view){
+                Toast.makeText(getActivity(),"该功能全速开发中，敬请期待！",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btn6.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View view){
+                Toast.makeText(getActivity(),"该功能全速开发中，敬请期待！",Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+        btn8.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public  void onClick(View view){
+
+                Toast.makeText(getActivity(),"该功能全速开发中，敬请期待！",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
+
+
+
 
 
 

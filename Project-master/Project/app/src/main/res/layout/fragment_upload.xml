@@ -4,21 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/back"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        />
     <VideoView
         android:id="@+id/previewVideo"
-        android:layout_width="107dp"
-        android:layout_height="145dp"
+        android:layout_width="135dp"
+        android:layout_height="174dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="20dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="20dp">
         <Button
             android:id="@+id/selectVideo"
             android:layout_width="wrap_content"
@@ -29,23 +34,24 @@
             android:id="@+id/getVideo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="拍摄视频" />
 
     </LinearLayout>
 
     <ImageView
         android:id="@+id/previewCover"
-        android:layout_width="108dp"
-        android:layout_height="133dp"
+        android:layout_width="135dp"
+        android:layout_height="174dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginBottom="20dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="20dp">
         <Button
             android:id="@+id/selectCover"
             android:layout_width="wrap_content"
@@ -55,6 +61,7 @@
             android:id="@+id/getCover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="拍摄封面" />
     </LinearLayout>
 
@@ -63,7 +70,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_gravity="center"
-        android:layout_marginBottom="30dp">
+        android:layout_marginBottom="20dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -89,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:text=""
         android:textColor="@color/black"/>
 

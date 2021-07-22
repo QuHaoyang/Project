@@ -1,38 +1,25 @@
-package com.example.project.FragmentRecommend;
+package com.example.project;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.media.MediaMetadataRetriever;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.MediaController;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-import androidx.recyclerview.widget.PagerSnapHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
-
-import com.example.project.R;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.example.project.FragmentRecommend.myadapter;
+import com.example.project.FragmentRecommend.videoGetResponse;
+import com.example.project.FragmentRecommend.videos;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -40,7 +27,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,34 +34,32 @@ import javax.net.ssl.HttpsURLConnection;
 
 import cn.jzvd.Jzvd;
 
-
-public class FragmentRecommend extends Fragment {
+public class MyVideo extends AppCompatActivity {
     private RecyclerView recyclerView;
     private List<videos> list;
     private  myadapter myadapter;
     private PagerSnapHelper snapHelper;
     private LinearLayoutManager manager;
     private int currentPosition;
-    private Button refresh;
-    public FragmentRecommend(){
-
-    }
-
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_recommend,container,false);
 
 
-        recyclerView=view.findViewById(R.id.recyclerview);
+
+
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_my_video);
+
+
+        recyclerView=findViewById(R.id.myrecyclerview);
         snapHelper = new PagerSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
-        refresh = view.findViewById(R.id.refresh);
+
         list=new ArrayList<videos>();
         initData();
-         manager=new LinearLayoutManager(getContext());
-       // manager.setOrientation(LinearLayoutManager.VERTICAL);
+        manager=new LinearLayoutManager(this);
+        // manager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        myadapter = new myadapter(list,getContext());
+        myadapter = new myadapter(list,this);
 
         recyclerView.setAdapter(myadapter);
         recyclerView.setLayoutManager(manager);
@@ -83,7 +67,7 @@ public class FragmentRecommend extends Fragment {
         addListener();
 //        getData(null);
 
-        return view;
+
     }
     @Override
     public void onPause() {
@@ -95,14 +79,8 @@ public class FragmentRecommend extends Fragment {
 
     private void addListener() {
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),LinearLayoutManager.VERTICAL));
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getData(null);
-                recyclerView.scrollToPosition(0);
-            }
-        });
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
+
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -127,14 +105,14 @@ public class FragmentRecommend extends Fragment {
                             Jzvd.releaseAllVideos();
                             RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(view);
                             if (viewHolder != null && viewHolder instanceof com.example.project.FragmentRecommend.myadapter.MyViewHolder) {
-                                ((com.example.project.FragmentRecommend.myadapter.MyViewHolder) viewHolder).videoView.startVideo();
+//                                ((com.example.project.FragmentRecommend.myadapter.MyViewHolder) viewHolder).videoView.startVideo();
                             }
 
 
 //                            ((com.example.project.FragmentRecommend.myadapter.MyViewHolder) viewHolder).videoView.startVideo();
                         }
-                            currentPosition = position;
-                            break;
+                        currentPosition = position;
+                        break;
 
                     case RecyclerView.SCROLL_STATE_DRAGGING:
                         break;
@@ -162,6 +140,7 @@ public class FragmentRecommend extends Fragment {
     }
 
     private videoGetResponse baseGetMessagesFromRemote (String studentId,String token){
+        studentId="3190101095";
         String urlStr;
         if(studentId != null){
             urlStr = String.format("https://api-android-camp.bytedance.com/zju/invoke/video?student_id=%s",studentId);
@@ -195,6 +174,7 @@ public class FragmentRecommend extends Fragment {
     }
 
     private void getData(String studentId) {
+
         new Thread(new Runnable() {
             @Override
             public void run() {
