@@ -295,6 +295,8 @@ public class FragmentUpload extends Fragment {
                 t.printStackTrace();
                 Toast.makeText(getActivity(),"提交失败",Toast.LENGTH_SHORT).show();
                 loadingText.setText("上传失败");
+                loading = false;
+                pos.setEnabled(true);
                 return;
             }
         });
