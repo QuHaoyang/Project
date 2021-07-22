@@ -7,26 +7,12 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-<!--        <ImageView-->
-<!--            android:id="@+id/cover"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"/>-->
-<!--        <TextView-->
-<!--            android:id="@+id/tv_title"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:textColor="@android:color/white"-->
-<!--            android:textSize="20sp"-->
-<!--            android:gravity="center"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintRight_toRightOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            app:layout_constraintLeft_toLeftOf="parent" />-->
 
             <cn.jzvd.JzvdStd
                 android:id="@+id/video"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_above="@id/author"
                 android:layout_centerInParent="true"/>
 
 
