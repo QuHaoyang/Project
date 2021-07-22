@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SurfaceActivity">
+
+<!--    <ImageView-->
+<!--        android:id="@+id/head"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:background="@drawable/testfile1"-->
+<!--        android:visibility="invisible"/>-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/circle_head"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_centerInParent="true"/>-->
+
+
+
+    <FrameLayout
+        android:id="@+id/surface_fragment"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/guide"
+        android:layout_alignParentTop="true"/>
+
+    <RadioGroup
+        android:id="@+id/guide"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@drawable/buttonback"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/surface_recommend"
+            android:layout_weight="1"
+            android:checked="true"
+            android:drawableTop="@drawable/homepage"
+
+            android:text="推荐"
+            android:textColor="@drawable/textcolor"
+            style="@style/tab_menu_item"/>
+
+        <RadioButton
+            android:id="@+id/surface_upload"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/tab_menu_upload"
+            android:text="上传"
+            android:textColor="@drawable/textcolor"
+
+            style="@style/tab_menu_item"/>
+
+        <RadioButton
+            android:id="@+id/surface_mine"
+            android:layout_weight="1"
+            android:drawableTop="@drawable/tab_menu_user"
+
+            android:textColor="@drawable/textcolor"
+            android:text="我的"
+            style="@style/tab_menu_item"/>
+
+    </RadioGroup>
+</RelativeLayout>

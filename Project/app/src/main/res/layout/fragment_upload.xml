@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <VideoView
+        android:id="@+id/previewVideo"
+        android:layout_width="107dp"
+        android:layout_height="145dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp">
+        <Button
+            android:id="@+id/selectVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择视频" />
+
+        <Button
+            android:id="@+id/getVideo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拍摄视频" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/previewCover"
+        android:layout_width="108dp"
+        android:layout_height="133dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp">
+        <Button
+            android:id="@+id/selectCover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="选择封面" />
+        <Button
+            android:id="@+id/getCover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="拍摄封面" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginBottom="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="从视频中选取封面:"/>
+
+        <SeekBar
+            android:id="@+id/videoPosition"
+            android:layout_width="237dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上传"
+        android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="30sp"
+        android:text=""
+        android:textColor="@color/black"/>
+
+</LinearLayout>
