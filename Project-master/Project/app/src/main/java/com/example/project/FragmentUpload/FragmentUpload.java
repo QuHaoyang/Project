@@ -342,7 +342,6 @@ public class FragmentUpload extends Fragment {
             if (resultCode == Activity.RESULT_OK) {
                 videoUri = data.getData();
                 video.setVideoURI(videoUri);
-//                video.start();
             }
         }
         else if (REQUEST_CODE_COVER == requestCode) {
@@ -374,7 +373,6 @@ public class FragmentUpload extends Fragment {
         }
         else if((requestCode == GET_VIDEO_BY_CAMERA) && (resultCode == RESULT_OK)){
             video.setVideoURI(videoUri);
-            video.start();
         }
         if(videoUri != null){
             video.start();
