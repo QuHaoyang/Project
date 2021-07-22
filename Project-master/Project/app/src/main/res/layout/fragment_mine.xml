@@ -169,22 +169,6 @@
             android:drawableLeft="@drawable/about"
             android:gravity="left|center"
             />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/white"
-            />
-        <Button
-            android:id="@+id/button7"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="加入我们"
-            android:textSize="15sp"
-            android:background="@color/back"
-            android:drawableLeft="@drawable/join"
-            android:gravity="left|center"
-            />
-
 
         <TextView
             android:layout_width="match_parent"

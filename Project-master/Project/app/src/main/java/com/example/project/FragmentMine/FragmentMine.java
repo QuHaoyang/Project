@@ -93,11 +93,6 @@ public class FragmentMine extends Fragment {
         drawable6.setAlpha(100);
         btn6.setCompoundDrawables(drawable6,null,null,null);
 
-        Button btn7 = view.findViewById(R.id.button7);
-        Drawable drawable7=getResources().getDrawable(R.drawable.join);
-        drawable7.setBounds(0,0,100,100);
-        drawable7.setAlpha(100);
-        btn7.setCompoundDrawables(drawable7,null,null,null);
 
         Button btn8 = view.findViewById(R.id.button8);
         Drawable drawable8=getResources().getDrawable(R.drawable.setting);

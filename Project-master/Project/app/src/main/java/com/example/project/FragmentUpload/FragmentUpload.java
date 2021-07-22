@@ -1,9 +1,12 @@
 package com.example.project.FragmentUpload;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -11,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +27,9 @@ import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -31,6 +38,7 @@ import com.bumptech.glide.Glide;
 import com.example.project.FragmentMine.FragmentMine;
 import com.example.project.FragmentRecommend.myadapter;
 import com.example.project.FragmentRecommend.videos;
+import com.example.project.MainActivity;
 import com.example.project.R;
 
 import java.io.File;
@@ -42,6 +50,8 @@ import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import com.example.project.FragmentMine.Util;
 import com.example.project.SurfaceActivity;
@@ -55,6 +65,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.app.Activity.RESULT_OK;
+
+
 public class FragmentUpload extends Fragment {
     public FragmentUpload(){
 
@@ -64,7 +77,15 @@ public class FragmentUpload extends Fragment {
     private Uri coverUri = null;
     private static final int REQUEST_CODE_VIDEO = 101;
     private static final int REQUEST_CODE_COVER = 102;
+    private static final int GET_IMAGE_BY_CAMERA = 103;
+    private static final int GET_VIDEO_BY_CAMERA = 104;
+    private static final int PERMISSION_IMAGE_BY_CAMERA = 105;
+    private static final int PERMISSION_VIDEO_BY_CAMERA = 106;
+    private String takeImagePath;
+    private String takeVideoPath;
+
     File coverSaved;
+    File videoSaved;
     Button selectVideo;
     Button selectCover;
     Button getVideo;
@@ -123,7 +144,7 @@ public class FragmentUpload extends Fragment {
                     Toast.makeText(getActivity(),"正在上传请稍等",Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                record();
             }
         });
         getCover.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +153,9 @@ public class FragmentUpload extends Fragment {
                 if(loading == true){
                     Toast.makeText(getActivity(),"正在上传请稍等",Toast.LENGTH_SHORT).show();
                     return;
+                }
+                else{
+                    takePhoto();
                 }
             }
         });
@@ -155,7 +179,7 @@ public class FragmentUpload extends Fragment {
                 video.pause();
                 loadingText.setText("正在上传");
                 if(fromVideo){
-                    getOutputMediaPath();
+                    getOutputMediaCoverPath();
                     saveBitmapAsPng();
                     saveImageToGallery(getActivity());
                 }
@@ -326,6 +350,30 @@ public class FragmentUpload extends Fragment {
                 fromVideo = false;
             }
         }
+        else if((requestCode == GET_IMAGE_BY_CAMERA) && (resultCode == RESULT_OK))
+        {
+
+            int targetWidth = cover.getWidth();
+            int targetHeight = cover.getHeight();
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(takeImagePath, options);
+            int photoWidth = options.outWidth;
+            int photoHeight = options.outHeight;
+
+            int scaleFactor = Math.min(photoWidth / targetWidth, photoHeight / targetHeight);
+            options.inJustDecodeBounds = false;
+            options.inSampleSize = scaleFactor;
+            coverBitmap = BitmapFactory.decodeFile(takeImagePath, options);
+            cover.setImageBitmap(coverBitmap);
+            saveImageToGallery(getActivity());
+
+        }
+        else if((requestCode == GET_VIDEO_BY_CAMERA) && (resultCode == RESULT_OK)){
+            video.setVideoURI(videoUri);
+            video.start();
+        }
         if(videoUri != null){
             video.start();
         }
@@ -378,7 +426,7 @@ public class FragmentUpload extends Fragment {
         }
     }
 
-    private String getOutputMediaPath() {
+    private String getOutputMediaCoverPath() {
         File mediaStorageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile = new File(mediaStorageDir, "IMG_" + timeStamp + ".png");
@@ -393,6 +441,24 @@ public class FragmentUpload extends Fragment {
         }
         coverSaved = mediaFile;
         coverUri = Uri.fromFile(mediaFile);
+        return mediaFile.getAbsolutePath();
+    }
+
+    private String getOutputMediaVideoPath() {
+        File mediaStorageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile = new File(mediaStorageDir, "VIDEO_" + timeStamp + ".mp4");
+        if (!mediaFile.exists()) {
+            mediaFile.getParentFile().mkdirs();
+        }
+        try {
+            MediaStore.Images.Media.insertImage(getActivity().getContentResolver(),
+                    mediaFile.getAbsolutePath(), "VIDEO_" + timeStamp + ".mp4", null);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        videoSaved = mediaFile;
+        videoUri = Uri.fromFile(mediaFile);
         return mediaFile.getAbsolutePath();
     }
 
@@ -421,6 +487,94 @@ public class FragmentUpload extends Fragment {
             }
             context.sendBroadcast(intent);
         }
+
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (requestCode == PERMISSION_IMAGE_BY_CAMERA) {
+                boolean hasPermission = true;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        hasPermission = false;
+                        break;
+                    }
+                }
+                if (hasPermission) {
+                    takePhotoUsePathHasPermission();
+                } else {
+                    Toast.makeText(getActivity(), "权限获取失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else if(requestCode == PERMISSION_VIDEO_BY_CAMERA){
+                boolean hasPermission = true;
+                for (int grantResult : grantResults) {
+                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                        hasPermission = false;
+                        break;
+                    }
+                }
+                if (hasPermission) {
+                    recordVideo();
+                } else {
+                    Toast.makeText(getActivity(), "权限获取失败", Toast.LENGTH_SHORT).show();
+                }
+            }
+    }
+
+    private void requestCameraAndSDCardPermission() {
+        boolean hasCameraPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        if (hasCameraPermission) {
+            takePhotoUsePathHasPermission();
+        } else {
+            String[] permissions = new String[]{Manifest.permission.CAMERA};
+            ActivityCompat.requestPermissions(getActivity(), permissions, PERMISSION_IMAGE_BY_CAMERA);
+        }
+    }
+
+    public void takePhoto() {
+        requestCameraAndSDCardPermission();
+    }
+
+    private void takePhotoUsePathHasPermission() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takeImagePath = getOutputMediaCoverPath();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, PathUtils.getUriForFile(getActivity(), takeImagePath));
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, GET_IMAGE_BY_CAMERA);
+        }
+    }
+
+    public void record(){
+        requestVideoPermission();
+    }
+
+    public void recordVideo(){
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        takeVideoPath = getOutputMediaVideoPath();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,PathUtils.getUriForFile(getActivity(),takeVideoPath));
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
+        if(intent.resolveActivity(getActivity().getPackageManager()) != null){
+            startActivityForResult(intent,GET_VIDEO_BY_CAMERA);
+        }
+    }
+
+    private void requestVideoPermission() {
+        boolean hasCameraPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        boolean hasAudioPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
+        if (hasCameraPermission && hasAudioPermission) {
+            recordVideo();
+        } else {
+            List<String> permission = new ArrayList<String>();
+            if (!hasCameraPermission) {
+                permission.add(Manifest.permission.CAMERA);
+            }
+            if (!hasAudioPermission) {
+                permission.add(Manifest.permission.RECORD_AUDIO);
+            }
+            ActivityCompat.requestPermissions(getActivity(), permission.toArray(new String[permission.size()]), PERMISSION_VIDEO_BY_CAMERA);
+        }
+
+    }
 }

@@ -81,6 +81,7 @@ public class myadapter extends RecyclerView.Adapter <myadapter.MyViewHolder> {
      //   holder.videoView.setVideoURI(Uri.parse( video.getVideoUrl()));
         holder.videoView.setUp(video.getVideoUrl(),null);
         holder.videoView.posterImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
         Glide.with(context).asDrawable().load(video.getImageUrl()).into(holder.videoView.posterImageView);
 //        holder.videoView.startVideo();
     }

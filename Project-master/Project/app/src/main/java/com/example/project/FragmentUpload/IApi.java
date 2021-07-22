@@ -12,8 +12,6 @@ import retrofit2.http.Query;
 
 public interface IApi {
 
-    //TODO 4
-    // 补全所有注解
     @Multipart
     @POST("zju/invoke/video")
     Call<UploadResponse> submitMessage(@Query("student_id") String studentId,
